@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('priorities', function (Blueprint $table) {
             $table->id();
-            // $table->enum('level', ['high', 'mid', 'low']);
             $table->string('priority');
         });
     }

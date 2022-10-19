@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+// API resource better letak bawah
 
 // Auth Login 
 Route::post('user-login', [AuthController::class, 'login']);
@@ -28,8 +29,10 @@ Route::post('user-login', [AuthController::class, 'login']);
 // Auth Logout
 Route::post('user-logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+Route::get('user/developer', [UsersController::class, "getDev"])->middleware('auth:sanctum');
+
 // Registration
-Route::apiResource('register', UserController::class)->only('store');
+Route::apiResource('register', UsersController::class)->only('store');
 
 // User functionality
 Route::apiResource('user', UsersController::class)->middleware('auth:sanctum')->except('store');
@@ -39,8 +42,3 @@ Route::apiResource('ticket', TicketController::class)->middleware('auth:sanctum'
 
 // for developer to update category
 Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
-
-// checking auth
-Route::get('auth', function () {
-    return response()->json(['Test' => 'Success']);
-})->middleware('auth:sanctum', 'role:Admin');

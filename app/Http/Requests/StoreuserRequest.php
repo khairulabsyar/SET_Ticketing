@@ -34,7 +34,7 @@ class StoreuserRequest extends FormRequest
                 'min:5'
             ],
             'role' => 'required|string|max:255',
-            'email' => 'required|string|unique:posts|max:255',
+            'email' => 'required|email|max:255',
 
         ];
     }

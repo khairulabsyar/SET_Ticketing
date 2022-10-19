@@ -17,11 +17,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->role == 'Admin') {
+        if (Auth::user()->hasRole('Admin')) {
             $data = User::all();
             return response()->json($data);
         } else {
-            abort(403, "You are not authorized to access thia");
+            abort(403, "You are not authorized to access this");
         }
     }
 
@@ -45,7 +45,6 @@ class UsersController extends Controller
             $user = User::create($request->all());
             $user->assignRole('Admin');
         } else {
-            // return redirect('/');
             return `Error, choose either "Client", "Developer" or "Admin"`;
         }
 
@@ -90,5 +89,15 @@ class UsersController extends Controller
         User::findOrFail($id)->delete();
 
         return response()->json('Delete User:' . $id, 204);
+    }
+
+    public function getDev()
+    {
+        // if (Auth::user()->hasRole('Admin')) {
+        $data = User::where("role", "Developer")->get();
+        return response()->json($data);
+        // } else {
+        //     abort(403, "You are not authorized to access this");
+        // }
     }
 }

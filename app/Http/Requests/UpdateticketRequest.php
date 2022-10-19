@@ -27,8 +27,9 @@ class UpdateticketRequest extends FormRequest
             'description' => 'string',
             'user_id' => 'exists:users,id',
             'priority_id' => 'exists:priorities,id',
-            'status_id' => 'exists:status,id',
-            'category_id' => 'exists:categories,id'
+            'status_id' => 'exists:statuses,id',
+            'category_id' => 'exists:categories,id',
+            'developer_id' => 'exists:users,id'
         ];
     }
 }

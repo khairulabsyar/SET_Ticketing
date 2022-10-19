@@ -29,7 +29,8 @@ class StoreticketRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'priority_id' => 'required|exists:priorities,id',
             'status_id' => 'required|exists:statuses,id',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'developer_id' => 'exists:users,id'
         ];
     }
 }

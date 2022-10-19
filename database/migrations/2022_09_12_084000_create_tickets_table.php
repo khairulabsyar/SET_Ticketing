@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('description');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('priority_id')->constrained();
-            $table->foreignId('status_id')->constrained();
+            $table->foreignId('status_id')->references('id')->on('statuses');
             $table->foreignId('category_id')->constrained();
+            $table->foreignId('developer_id', "user_id")->reference("id")->on("users")->nullable()->onDelete('cascade');
         });
     }
 

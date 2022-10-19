@@ -27,12 +27,18 @@ class Ticket extends Authenticatable
         'user_id',
         'priority_id',
         'status_id',
-        'category_id'
+        'category_id',
+        'developer_id'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function developer()
+    {
+        return $this->belongsTo(User::class, "developer_id");
     }
 
     public function priority()

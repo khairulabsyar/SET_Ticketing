@@ -12,12 +12,22 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+
+        $role = "";
         $data = $request->validate([
-            'first_name' => 'required|string|min:5',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('first_name', $data['first_name'])->first();
+        $user = User::where('email', $data['email'])->first();
+
+        if ($user->hasRole('Admin')) {
+            $role = "Admin";
+        } elseif ($user->hasRole("Developer")) {
+            $role = "Developer";
+        } else {
+            $role = "Client";
+        }
 
         if ($user && Hash::check($data['password'], $user->password)) {
             $token = $user->createToken('API Token')->plainTextToken;
@@ -25,7 +35,10 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Success Login',
                 'data' => [
-                    'token' => $token
+                    'token' => $token,
+                    'firstName' => $user->first_name,
+                    'role' => $role,
+                    "id" => $user->id,
                 ]
             ]);
         }

@@ -18,7 +18,19 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $myTicket = Auth::user()->tickets;
+        $user = Auth::user();
+
+        if ($user->hasRole('Admin')) {
+            $myTicket = Ticket::all();
+        }
+
+        if ($user->hasRole('Developer')) {
+            $myTicket = Ticket::where('developer_id', $user->id)->get();
+        }
+
+        if ($user->hasRole('Client')) {
+            $myTicket = Ticket::where('user_id', $user->id)->get();
+        }
 
         return TicketResource::collection($myTicket);
     }
@@ -31,7 +43,8 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user()->role == 'Client') {
+
+        if (Auth::user()->hasRole('Client')) {
             $ticket = Auth::user()->tickets()->create($request->all());
             return new TicketResource($ticket);
         } else {
@@ -62,8 +75,9 @@ class TicketController extends Controller
      */
     public function update(UpdateticketRequest $request, Ticket $ticket)
     {
-        if (Auth::user()->role == "Developer" || "Client") {
-            $ticket->update($request->except(["title", "category_id"]));
+        // dd($request);
+        if (Auth::user()->hasRole("Admin") || Auth::user()->hasRole("Developer")) {
+            $ticket->update($request->except(["title", "user_id", "description", 'category_id']));
             return new TicketResource($ticket);
         } else {
             abort(403, "Unable to update ticket");
@@ -78,7 +92,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        if ($ticket->user_id == Auth::id() || (Auth::user()->roles == 'Client' || "Admin")) {
+        if ($ticket->user_id == Auth::id() && (Auth::user()->hasRole('Client') || Auth::user()->hasRole('Admin'))) {
             $ticket->delete();
             return response()->json(null, 204);
         }
