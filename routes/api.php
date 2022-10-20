@@ -29,7 +29,8 @@ Route::post('user-login', [AuthController::class, 'login']);
 // Auth Logout
 Route::post('user-logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('user/developer', [UsersController::class, "getDev"])->middleware('auth:sanctum');
+Route::get('user/developer', [UsersController::class, "getDev"]);
+
 // Registration
 Route::apiResource('register', UsersController::class)->only('store');
 
