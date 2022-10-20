@@ -92,7 +92,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        if ($ticket->user_id == Auth::id() && (Auth::user()->hasRole('Client') || Auth::user()->hasRole('Admin'))) {
+        if ((Auth::user()->hasRole('Client') || Auth::user()->hasRole('Admin'))) {
             $ticket->delete();
             return response()->json(null, 204);
         }

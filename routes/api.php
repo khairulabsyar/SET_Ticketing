@@ -30,7 +30,6 @@ Route::post('user-login', [AuthController::class, 'login']);
 Route::post('user-logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::get('user/developer', [UsersController::class, "getDev"])->middleware('auth:sanctum');
-
 // Registration
 Route::apiResource('register', UsersController::class)->only('store');
 
