@@ -93,7 +93,11 @@ class UsersController extends Controller
 
     public function getDev()
     {
+        // if (Auth::user()->hasRole('Admin')) {
         $data = User::where("role", "Developer")->get();
         return response()->json($data);
+        // } else {
+        //     abort(403, "You are not authorized to access this");
+        // }
     }
 }
